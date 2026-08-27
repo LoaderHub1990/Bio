@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DiscordBio | Home</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="landing">
+    <div class="landing-card">
+        <h1>Discord<span class="accent">Bio</span></h1>
+        <p class="sub">สร้างหน้าโปรไฟล์ของคุณ ล็อกอินด้วย Discord จริง ดึงรูป/กรอบ/ชื่อจริงอัตโนมัติ</p>
+
+        <% if (loggedIn) { %>
+            <p class="welcome">ล็อกอินอยู่ในชื่อ <strong><%= user.globalName || user.discordUsername %></strong></p>
+            <a class="btn btn-primary" href="/dashboard">ไปที่แดชบอร์ด</a>
+            <form action="/auth/logout" method="POST">
+                <button class="btn btn-ghost" type="submit">ออกจากระบบ</button>
+            </form>
+        <% } else { %>
+            <a class="btn btn-discord" href="/auth/discord">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.099.246.197.373.291a.077.077 0 0 1-.006.128 12.3 12.3 0 0 1-1.873.892.076.076 0 0 0-.04.106c.36.698.772 1.362 1.225 1.994a.076.076 0 0 0 .084.028 19.83 19.83 0 0 0 6.002-3.03.077.077 0 0 0 .032-.055c.5-5.177-.838-9.674-3.549-13.66a.06.06 0 0 0-.031-.028z"/></svg>
+                เข้าสู่ระบบด้วย Discord
+            </a>
+        <% } %>
+
+        <p class="hint">* ต้องตั้งค่า DISCORD_CLIENT_ID / DISCORD_CLIENT_SECRET ใน .env ก่อนใช้งานได้จริง (ดู .env.example)</p>
+    </div>
+</body>
+</html>

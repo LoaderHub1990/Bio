@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard | DiscordBio</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="dashboard">
+    <header class="topbar">
+        <span class="logo">Discord<span class="accent">Bio</span></span>
+        <div class="topbar-right">
+            <a href="/u/<%= user.customUsername %>" target="_blank" class="btn btn-ghost btn-sm">ดูโปรไฟล์สาธารณะ ↗</a>
+            <form action="/auth/logout" method="POST"><button class="btn btn-ghost btn-sm" type="submit">ออกจากระบบ</button></form>
+        </div>
+    </header>
+
+    <main class="dash-layout">
+        <form id="settings-form" class="panel settings-panel">
+            <h2>ข้อมูลพื้นฐาน</h2>
+
+            <label>ชื่อผู้ใช้สำหรับลิงก์โปรไฟล์ (/u/xxx)</label>
+            <input type="text" name="customUsername" value="<%= user.customUsername %>" pattern="[a-zA-Z0-9_\-]+" required>
+
+            <label>Display Name (เว้นว่าง = ใช้ชื่อ Discord จริง)</label>
+            <input type="text" name="displayName" value="<%= user.settings.displayName %>" placeholder="<%= user.globalName || user.discordUsername %>">
+
+            <label>Bio / คำอธิบาย</label>
+            <textarea name="bio" rows="3" placeholder="เล่าเกี่ยวกับตัวคุณ..."><%= user.settings.bio %></textarea>
+
+            <label>Location</label>
+            <input type="text" name="location" value="<%= user.settings.location %>" placeholder="เช่น Bangkok, Thailand">
+
+            <h2>เอฟเฟกต์ตัวหนังสือ</h2>
+
+            <label>เอฟเฟกต์ชื่อ (Username)</label>
+            <select name="usernameEffect">
+                <option value="none">ไม่มี</option>
+                <option value="rainbow">Rainbow</option>
+                <option value="glitch">Glitch</option>
+                <option value="typewriter">Typewriter</option>
+            </select>
+
+            <label>เอฟเฟกต์ Bio</label>
+            <select name="bioEffect">
+                <option value="none">ไม่มี</option>
+                <option value="rainbow">Rainbow</option>
+                <option value="glitch">Glitch</option>
+                <option value="typewriter">Typewriter</option>
+            </select>
+
+            <h2>พื้นหลัง</h2>
+
+            <label>ประเภทพื้นหลัง</label>
+            <select name="backgroundType" id="bgType">
+                <option value="color">สีพื้น</option>
+                <option value="gradient">ไล่สี (Gradient)</option>
+                <option value="image">รูปภาพ (URL)</option>
+                <option value="video">วิดีโอ (URL)</option>
+            </select>
+
+            <div class="bg-field" data-for="color">
+                <label>สีพื้นหลัง</label>
+                <input type="color" name="backgroundColor" value="<%= user.settings.backgroundColor %>">
+            </div>
+
+            <div class="bg-field" data-for="gradient">
+                <label>สีเริ่มต้น</label>
+                <input type="color" name="backgroundGradientFrom" value="<%= user.settings.backgroundGradientFrom %>">
+                <label>สีปลาย</label>
+                <input type="color" name="backgroundGradientTo" value="<%= user.settings.backgroundGradientTo %>">
+            </div>
+
+            <div class="bg-field" data-for="image">
+                <label>URL รูปภาพพื้นหลัง</label>
+                <input type="url" name="backgroundImageUrl" value="<%= user.settings.backgroundImageUrl %>" placeholder="https://...">
+            </div>
+
+            <div class="bg-field" data-for="video">
+                <label>URL วิดีโอพื้นหลัง (mp4)</label>
+                <input type="url" name="backgroundVideoUrl" value="<%= user.settings.backgroundVideoUrl %>" placeholder="https://....mp4">
+            </div>
+
+            <label>เอฟเฟกต์พื้นหลัง (ลอยด้านหน้า)</label>
+            <select name="backgroundEffect">
+                <option value="none">ไม่มี</option>
+                <option value="particles">Particles</option>
+                <option value="snow">หิมะตก</option>
+                <option value="stars">ดาวกะพริบ</option>
+            </select>
+
+            <h2>Glow Effects</h2>
+            <label class="checkbox"><input type="checkbox" name="glow.username"> Username Glow</label>
+            <label class="checkbox"><input type="checkbox" name="glow.description"> Description Glow</label>
+            <label class="checkbox"><input type="checkbox" name="glow.location"> Location Glow</label>
+            <label class="checkbox"><input type="checkbox" name="glow.socials"> Socials Glow</label>
+
+            <h2>ลิงก์โซเชียล</h2>
+            <div id="socials-list"></div>
+            <button type="button" id="add-social" class="btn btn-ghost btn-sm">+ เพิ่มลิงก์</button>
+
+            <button type="submit" class="btn btn-primary save-btn">บันทึกการตั้งค่า</button>
+            <p id="save-status"></p>
+        </form>
+
+        <div class="panel preview-panel">
+            <h2>พรีวิวสด</h2>
+            <div class="preview-frame">
+                <iframe id="preview-iframe" src="/u/<%= user.customUsername %>?preview=1"></iframe>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        window.__INITIAL_SETTINGS__ = <%- JSON.stringify(user.settings) %>;
+    </script>
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>

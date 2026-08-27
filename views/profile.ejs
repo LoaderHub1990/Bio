@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><%= settings.displayName || user.globalName || user.discordUsername %> | DiscordBio</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="profile-body">
+
+    <div id="bg-layer" class="bg-layer
+        <%= settings.backgroundType === 'color' ? 'bg-color' : '' %>
+        <%= settings.backgroundType === 'gradient' ? 'bg-gradient' : '' %>"
+        style="
+        <% if (settings.backgroundType === 'color') { %>
+            background: <%= settings.backgroundColor %>;
+        <% } else if (settings.backgroundType === 'gradient') { %>
+            background: linear-gradient(135deg, <%= settings.backgroundGradientFrom %>, <%= settings.backgroundGradientTo %>);
+        <% } else if (settings.backgroundType === 'image' && settings.backgroundImageUrl) { %>
+            background-image: url('<%= settings.backgroundImageUrl %>'); background-size: cover; background-position: center;
+        <% } %>
+    ">
+        <% if (settings.backgroundType === 'video' && settings.backgroundVideoUrl) { %>
+            <video autoplay muted loop playsinline class="bg-video">
+                <source src="<%= settings.backgroundVideoUrl %>" type="video/mp4">
+            </video>
+        <% } %>
+    </div>
+
+    <canvas id="fx-canvas" class="fx-canvas" data-effect="<%= settings.backgroundEffect %>"></canvas>
+
+    <main class="profile-card">
+        <div class="avatar-container">
+            <% if (avatarDecorationUrl) { %>
+                <img class="decoration-frame" src="<%= avatarDecorationUrl %>" alt="">
+            <% } %>
+            <img class="discord-avatar" src="<%= avatarUrl %>" alt="avatar">
+        </div>
+
+        <h1 class="display-name fx-<%= settings.usernameEffect %> <%= settings.glow.username ? 'glow' : '' %>"
+            data-text="<%= settings.displayName || user.globalName || user.discordUsername %>">
+            <%= settings.displayName || user.globalName || user.discordUsername %>
+        </h1>
+        <p class="handle">@<%= user.discordUsername %></p>
+
+        <% if (settings.location) { %>
+            <p class="location <%= settings.glow.location ? 'glow' : '' %>">📍 <%= settings.location %></p>
+        <% } %>
+
+        <% if (settings.bio) { %>
+            <p class="bio fx-<%= settings.bioEffect %> <%= settings.glow.description ? 'glow' : '' %>"
+               data-text="<%= settings.bio %>">
+               <%= settings.bio %>
+            </p>
+        <% } %>
+
+        <% if (settings.socials && settings.socials.length) { %>
+            <div class="socials <%= settings.glow.socials ? 'glow' : '' %>">
+                <% settings.socials.forEach(function(s) { %>
+                    <a href="<%= s.url %>" target="_blank" rel="noopener noreferrer"><%= s.platform %></a>
+                <% }) %>
+            </div>
+        <% } %>
+    </main>
+
+    <script src="/js/profile.js"></script>
+</body>
+</html>
